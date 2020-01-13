@@ -32,15 +32,14 @@ public class UserController {
 
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.CREATED)
-    public String login(//
-                        @RequestParam String username, //
-                        @RequestParam String password) {
-        return userService.logIn(username, password);
+    public User login(//
+                        @RequestBody User user) {
+        return userService.logIn(user);
     }
 
     @PostMapping("/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public String signup(@RequestBody User user) {
+    public User signup(@RequestBody User user) {
         return userService.signUp(user);
     }
 

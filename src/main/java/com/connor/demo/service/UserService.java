@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-
     private UserRepository userRepository;
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider jwtTokenProvider;
@@ -37,21 +36,24 @@ public class UserService {
 
     public Iterable<User> findAll(){return userRepository.findAll();}
 
-    public String logIn(String username, String password) {
+    public User logIn(User user) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username);
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+            user = userRepository.findByUsername(user.getUsername());
+            user.setToken(jwtTokenProvider.createToken(user.getUsername()));
+            return user;
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
             throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
-    public String signUp(User user) {
+    public User signUp(User user) {
         if (!userRepository.existsByUsername(user.getUsername())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
-            return jwtTokenProvider.createToken(user.getUsername());
+            user.setToken(jwtTokenProvider.createToken(user.getUsername()));
+            return user;
         } else {
             throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }

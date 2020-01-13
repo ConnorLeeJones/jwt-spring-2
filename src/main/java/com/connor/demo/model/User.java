@@ -35,6 +35,9 @@ public class User implements Serializable {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "token")
+    private String token;
+
 
 
 //    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -81,4 +84,11 @@ public class User implements Serializable {
     }
 
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
