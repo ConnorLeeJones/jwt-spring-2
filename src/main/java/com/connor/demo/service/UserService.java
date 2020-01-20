@@ -36,12 +36,16 @@ public class UserService {
 
     public Iterable<User> findAll(){return userRepository.findAll();}
 
-    public User logIn(User user) {
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
+    public String logIn(User user) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-            user = userRepository.findByUsername(user.getUsername());
-            user.setToken(jwtTokenProvider.createToken(user.getUsername()));
-            return user;
+            String tok = jwtTokenProvider.createToken(user.getUsername());
+            System.out.println(tok);
+            return tok;
         } catch (AuthenticationException e) {
             System.out.println(e.getMessage());
             throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
@@ -51,9 +55,7 @@ public class UserService {
     public User signUp(User user) {
         if (!userRepository.existsByUsername(user.getUsername())) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            user.setToken(jwtTokenProvider.createToken(user.getUsername()));
-            return user;
+            return userRepository.save(user);
         } else {
             throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }

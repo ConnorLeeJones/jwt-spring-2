@@ -24,17 +24,22 @@ public class UserController {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/id/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        return new ResponseEntity<>(userService.findByUsername(username), HttpStatus.OK);
     }
 
 
     @PostMapping("/signin")
     @ResponseStatus(HttpStatus.CREATED)
-    public User login(//
+    public ResponseEntity<String> login(//
                         @RequestBody User user) {
-        return userService.logIn(user);
+        return new ResponseEntity<>(userService.logIn(user), HttpStatus.OK);
     }
 
     @PostMapping("/signup")

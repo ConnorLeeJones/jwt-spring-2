@@ -35,28 +35,8 @@ public class User implements Serializable {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "token")
-    private String token;
 
-
-
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    @JoinTable(name = "user_group", joinColumns = {@JoinColumn(name = "user_id")},
-//            inverseJoinColumns = {@JoinColumn(name="friend_group_id")})
-
-//    @JsonIgnoreProperties("users")
-//    private Set<FriendGroup> groups;
-
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @JsonManagedReference
-//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-//    private List<Card> cards;
-
-    public User() {
-//        groups = new HashSet<>();
-//        cards = new ArrayList<>();
-    }
+    public User() {}
 
 
     public Long getId() {
@@ -83,12 +63,4 @@ public class User implements Serializable {
         this.username = username;
     }
 
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }
